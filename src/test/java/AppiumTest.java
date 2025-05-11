@@ -2,15 +2,17 @@ import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.remote.MobilePlatform;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebElement;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.util.UUID;
 
 
 public class AppiumTest {
@@ -29,6 +31,17 @@ public class AppiumTest {
                 // The default URL in Appium 1 is http://127.0.0.1:4723/wd/hub
                 new URI("http://127.0.0.1:4723").toURL(), options
         );
+    }
+
+    @AfterEach
+    void afterEach() throws IOException {
+        screenShot();
+    }
+
+    private void screenShot() throws IOException {
+        File srcFile = driver.getScreenshotAs(OutputType.FILE);
+        String fileName = UUID.randomUUID().toString();
+        Files.copy(srcFile.toPath(), new File("/Users/ryosuke/" + fileName + ".jpg").toPath());
     }
 
     @AfterAll
